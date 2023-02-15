@@ -1,7 +1,16 @@
-package Controller;
+package Main.Controller;
+
+import Main.Model.Account;
+import Main.Model.Message;
+import Main.Service.AccountService;
+import Main.Service.ModelService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import java.util.List;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -14,20 +23,80 @@ public class SocialMediaController {
      * suite must receive a Javalin object from this method.
      * @return a Javalin app object which defines the behavior of the Javalin controller.
      */
-    public Javalin startAPI() {
-        Javalin app = Javalin.create();
-        app.get("example-endpoint", this::exampleHandler);
 
-        return app;
+     Javalin app;
+
+    AccountService accountService;
+    MessageService messageService;
+
+    public SocialMediaController(){
+        this.accountService = new AccountService();
+        this.messageService = new MessageService();
+    }
+
+    public Javalin startAPI() {
+
+        Javalin app = Javalin.create();
+        //app.get("example-endpoint", this::exampleHandler);
+
+        app.post("/register", this::postAccountHandler);
+        app.post("/login", this::postAccountHandler);
+        app.post("/messages", this::postMessagesHandler);
+        app.get("/messages", this::getAllMessagesHandler);
+        app.get("/messages/message_id", this::getAllMessagesHandler);
+        app.delete("/messages/message_id", this::getAllMessagesHandler);
+        app.patch("/messages/message_id", this::getAllMessagesHandler);
+        app.get("/accounts/account_id/messages", this::getAllAccountsHandler);
+        
+        //return app;
+
+
+        app.start(8080);
     }
 
     /**
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
-    private void exampleHandler(Context context) {
-        context.json("sample text");
+    /**private void exampleHandler(Context context) {
+        //context.json("sample text");
+    } **/
+    private void postAllAccountsHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account addedAccount = accountService.addAccount(account);
+
+        if(addedAccount!=null){
+            ctx.json(mapper.writeValueAsString(addedAccount));
+        }else{
+            ctx.status(400);
+        }
+        
     }
 
+    private void getAllAccountsHandler(Context ctx) {
+        List<Account> account = accountService.getAllAccounts();
+        ctx.json(accounts);
+    }
+
+
+    private void postAllMesssagesHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        Message addedMessage = messageService.addMessage(message);
+        
+        if(addedMessage!=null){
+            ctx.json(mapper.writeValueAsString(addedMessage));
+        }else{
+            ctx.status(400);
+        }
+    }
+
+    private void getAllMessagesHandler(Context ctx) {
+        List<Message> message = messageService.getAllMessages();
+        ctx.json(message);
+    }
+
+    
 
 }
