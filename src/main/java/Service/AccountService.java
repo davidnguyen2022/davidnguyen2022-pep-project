@@ -16,11 +16,31 @@ public class AccountService{
         this.accountDAO = accountDAO;
     }
 
+    public Account addAccount(Account account) {
+        if(account.username != "" && account.password.length() >=4) {
+            return accountDAO.addAccount(account);
+        }
+        return null;
+    }
+
+    public Account logIn(Account account) {
+
+    String username = account.getUsername();
+    String password = account.getPassword();
+    Account accountDB = accountDAO.getAccountByUsername(username);
+        if(accountDB != null || !username.isBlank()) {
+            return this.accountDAO.userLogin(username, password);
+        }
+        else{
+            return null;
+        }
+        
+    }
+
     
 
-    public Account addAccount(Account account) {
-        return accountDAO.insertAccount(account);
-    }
+    
+
     
     
 
