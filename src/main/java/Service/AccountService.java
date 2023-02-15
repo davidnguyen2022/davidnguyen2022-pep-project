@@ -23,17 +23,11 @@ public class AccountService{
         return null;
     }
 
-    public Account logIn(Account account) {
+    public Account logIn(String username, String password) {
 
-    String username = account.getUsername();
-    String password = account.getPassword();
-    Account accountDB = accountDAO.getAccountByUsername(username);
-        if(accountDB != null || !username.isBlank()) {
-            return this.accountDAO.userLogin(username, password);
-        }
-        else{
-            return null;
-        }
+   
+            return accountDAO.userLogin(username, password);
+        
         
     }
 

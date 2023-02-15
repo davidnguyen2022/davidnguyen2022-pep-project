@@ -23,6 +23,11 @@ public class AccountDAO {
             
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
+            if (rs.next()) {
+                int generated_account_id = (int) rs.getLong(1);
+                return new Account(generated_account_id, account.getUsername(), account.getPassword());
+
+            }
         }
         catch(SQLException e) {
             e.printStackTrace();
@@ -42,8 +47,8 @@ public class AccountDAO {
             preparedStatement.setString(2, password);
            
             ResultSet rs = preparedStatement.executeQuery();
-            if(rs.next()) {
-                Account accountLogin = new Account(rs.getInt(columnLabel:"account_id"), rs.getString(columnLabel:"username"), rs.getString(columnLabel:"password"));
+            while(rs.next()) {
+                Account accountLogin = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("password"));
                 return accountLogin;
             }
         }
@@ -54,54 +59,5 @@ public class AccountDAO {
         return null;
     }
 
-    public Account getAccountByUsername(String username){
-        Connection connection = ConnectionUtil.getConnection();
-        try {
-            String sql = "SELECT * FROM account WHERE username = ?" ;
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            
-            preparedStatement.setString(1, username);
-            
-           
-            ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()) {
-                Account account = new Account(rs.getInt(columnLabel:"account_id"), rs.getString(columnLabel: "username"), rs.getString(columnLabel: "password"));
-                System.out.print(account.getUsername());
-                return account;
-            }
-        }
-        catch(SQLException e) {
-            System.out.println(e.getMessage());
-
-        }
-        return null;
-    }
-
-    public Account getAccountByAccountId(int posted_by){
-        Connection connection = ConnectionUtil.getConnection();
-        try {
-            String sql = "SELECT * FROM account WHERE account_id = ?" ;
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            
-            preparedStatement.setInt(1, posted_by);
-            
-           
-            ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()) {
-                Account account = new Account(rs.getInt(columnLabel:"account_id"), rs.getString(columnLabel: "username"), rs.getString(columnLabel: "password"));
-                
-                return account;
-            }
-        }
-        catch(SQLException e) {
-            System.out.println(e.getMessage());
-
-        }
-        return null;
-    }
-
-    
     
 }
