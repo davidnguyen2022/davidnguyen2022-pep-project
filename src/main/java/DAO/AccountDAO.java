@@ -1,29 +1,28 @@
-package Main.DAO;
+package DAO;
 
-import Main.Util.ConnectionUtil;
-import Main.Model.Account;
+import Util.ConnectionUtil;
+import Model.Account;
 
-import java.util.List;
-import java.util.ArrayList;
+
 import java.sql.*;
 
 
 public class AccountDAO {
-    public List<Account> getAllAccounts(){
-        Connection connection = ConnectionUtil.getConnection();
-        List<Account> accounts = new ArrayList<>();
-        try {
-        }
-        catch(SQLException e){
-            e.printStackTrace();
-        }
-        return account;
-
-    }
+ 
 
     public Account insertAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
+            String sql = "INSERT INTO account (username, password) values (?, ?);" ;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            
+            preparedStatement.setString(1, account.getUsername());
+            preparedStatement.setString(2, account.getPassword());
+           
+            
+            preparedStatement.executeUpdate();
+            ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
         }
         catch(SQLException e) {
             e.printStackTrace();

@@ -1,9 +1,9 @@
-package Main.Service;
+package Service;
 
-import Main.DAO.AccountDAO;
-import Main.Model.Account;
+import DAO.AccountDAO;
+import Model.Account;
 
-import java.util.List;
+
 
 public class AccountService{
     private AccountDAO accountDAO;
@@ -16,9 +16,7 @@ public class AccountService{
         this.accountDAO = accountDAO;
     }
 
-    public List<Account> getAllAccounts() {
-        return accountDAO.getAllAccounts();
-    }
+    
 
     public Account addAccount(Account account) {
         return accountDAO.insertAccount(account);
