@@ -14,8 +14,8 @@ public class MessageService{
     public MessageService(MessageDAO messageDAO){
         this.messageDAO = messageDAO;
     }
-    public List<Message> getAllMessages() {
-        return messageDAO.getAllMessages();
+    public List<Message> retrieveMessages() {
+        return messageDAO.retrieveMessages();
     }
 
     public Message createMessage(Message message) {
@@ -28,14 +28,14 @@ public class MessageService{
         }
     }
 
-    public Message getMessageByID (int message_id) {
-        return messageDAO.getMessageById(message_id);
+    public Message retrieveMessageByID (int message_id) {
+        return messageDAO.retrieveMessageByID(message_id);
     }
 
-    public Message deleteMessageByID (int message_id) {
-        Message messageDB = this.messageDAO.getMessageById(message_id);
+    public Message messagesDeleteByID (int message_id) {
+        Message messageDB = this.messageDAO.retrieveMessageByID(message_id);
 
-        messageDAO.deleteMessagesById(message_id);
+        messageDAO.messagesDeleteByID(message_id);
         if(messageDB == null) {
             return null;
         }return messageDB;
@@ -43,14 +43,17 @@ public class MessageService{
     }
 
     public Message updateMessageByID (Message message, int message_id) {
-        if(messageDAO.getMessageById(message_id) != null) {
+        if(messageDAO.retrieveMessageByID(message_id) != null) {
             return messageDAO.updateMessagesById(message, message_id);
         }
         return null;
     }
 
-    public List<Message> getMessagesByAccountID(int posted_by) {
-        return messageDAO.getMessagesByAccountID(posted_by);
+    public List<Message> getAllMessagesByID(int posted_by) {
+        return messageDAO.getAllMessagesByID(posted_by);
+    }
+    public Message messagesDeletedByID(int message_id) {
+        return null;
     }
     
     

@@ -16,9 +16,9 @@ public class AccountService{
         this.accountDAO = accountDAO;
     }
 
-    public Account addAccount(Account account) {
+    public Account registerAccount(Account account) {
         if(account.username != "" && account.password.length() >=4) {
-            return accountDAO.addAccount(account);
+            return accountDAO.registerAccount(account);
         }
         return null;
     }

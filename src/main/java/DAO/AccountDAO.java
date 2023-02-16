@@ -10,7 +10,7 @@ import java.sql.*;
 public class AccountDAO {
  
 
-    public Account addAccount(Account account){
+    public Account registerAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "INSERT INTO account (username, password) values (?, ?);" ;

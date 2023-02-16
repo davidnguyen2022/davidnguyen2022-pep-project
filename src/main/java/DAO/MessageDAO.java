@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.sql.*;
 
 public class MessageDAO {
-    public List<Message> getAllMessages(){
+    public List<Message> retrieveMessages(){
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
         try {
@@ -59,7 +59,7 @@ public class MessageDAO {
         return null;
     }
     
-    public Message getMessageById(int message_id){
+    public Message retrieveMessageByID(int message_id){
         Connection connection = ConnectionUtil.getConnection();
         try {
             
@@ -88,7 +88,7 @@ public class MessageDAO {
         }
         return null;
     }
-    public Message deleteMessagesById(int message_id){
+    public Message messagesDeleteByID(int message_id){
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "DELETE FROM message WHERE message_id = ?";
@@ -96,7 +96,7 @@ public class MessageDAO {
 
             preparedStatement.setInt(1, message_id);
             preparedStatement.executeUpdate();
-            return getMessageById(message_id);
+            return retrieveMessageByID(message_id);
 
         }
         catch (SQLException e) {
@@ -114,7 +114,7 @@ public class MessageDAO {
                 preparedStatement.setString(1, message.getMessage_text());
                 preparedStatement.setInt(2, message_id);
                 preparedStatement.executeUpdate();
-                return getMessageById(message_id);
+                return retrieveMessageByID(message_id);
     
             }
             catch (SQLException e) {
@@ -126,7 +126,7 @@ public class MessageDAO {
 
 } 
 
-public List<Message> getMessagesByAccountID(int posted_by){
+public List<Message> getAllMessagesByID(int posted_by){
     Connection connection = ConnectionUtil.getConnection();
     List <Message> messages = new ArrayList <>();
     try {
